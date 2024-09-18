@@ -28,7 +28,7 @@ fig.add_trace(go.Scatter(
     x=df['Start Real'],
     y=df['Task'],
     mode='markers',
-    marker=dict(color='blue', size=10),
+    marker=dict(color='black', size=10),
     name='Start Real'
 ))
 
