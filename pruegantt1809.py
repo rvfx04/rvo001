@@ -7,7 +7,7 @@ import plotly.graph_objects as go
 data = {
     'Task': ['Pedido 1', 'Pedido 2', 'Pedido 3'],
     'Start': ['2023-10-01', '2023-10-03', '2023-10-05'],
-    'Finish': ['2023-10-05', '2023-10-07', '2023-10-10'],
+    'Finish': ['2023-10-05', '', '2023-10-10'],
     'Resource': ['Proceso A', 'Proceso B', 'Proceso C']
 }
 
