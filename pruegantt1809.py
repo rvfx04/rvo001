@@ -17,7 +17,7 @@ df = pd.DataFrame(data)
 fig = px.timeline(df, x_start="Start", x_end="Finish", y="Task", color="Resource", text="Resource")
 
 # Ajustar el diseño del gráfico
---fig.update_yaxes(autorange="reversed")  # Esto invierte el eje Y para que los pedidos estén en orden
+#fig.update_yaxes(autorange="reversed")  # Esto invierte el eje Y para que los pedidos estén en orden
 
 # Mostrar la aplicación Streamlit
 st.title("Avance de Procesos de Pedido")
