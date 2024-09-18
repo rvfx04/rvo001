@@ -41,8 +41,8 @@ fig.add_trace(go.Scatter(
 ))
 
 # Fechas de colocación y entrega
-fecha_colocacion = '2023-09-15'
-fecha_entrega = '2023-10-15'
+fecha_colocacion = '2023-08-15'
+fecha_entrega = '2023-10-31'
 
 # Agregar líneas verticales para las fechas de colocación y entrega
 fig.add_shape(
