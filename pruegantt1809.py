@@ -18,7 +18,7 @@ data = {
 df = pd.DataFrame(data)
 
 # Crear el gráfico de Gantt
-fig = px.timeline(df, x_start="Start", x_end="Finish", y="Task", color="Resource", text="Resource", title="Avance de Procesos de Pedido")
+fig = px.timeline(df, x_start="Start", x_end="Finish", y="Task", color="Resource", text="Resource")
 
 # Ajustar el diseño del gráfico
 fig.update_yaxes(autorange="reversed")  # Esto invierte el eje Y para que los pedidos estén en orden
