@@ -7,10 +7,10 @@ from datetime import datetime
 # Datos de ejemplo para el gráfico de Gantt
 data = {
     'Task': ['Pedido 1', 'Pedido 2', 'Pedido 3', 'Pedido 4', 'Pedido 5'],
-    'Start': ['2023-09-01', '2023-09-10', '2023-09-20', '2023-10-01', '2023-10-10'],
-    'Finish': ['2023-09-15', '2023-09-25', '2023-10-05', '2023-10-15', '2023-10-25'],
-    'Start Real': ['2023-09-02', '2023-09-12', '2023-09-22', '2023-10-02', '2023-10-12'],
-    'Finish Real': ['2023-09-16', '2023-09-26', '2023-10-06', '2023-10-16', '2023-10-26'],
+    'Start': ['2024-09-01', '2024-09-10', '2024-09-20', '2024-10-01', '2024-10-10'],
+    'Finish': ['2024-09-15', '2024-09-25', '2024-10-05', '2024-10-15', '2024-10-25'],
+    'Start Real': ['2024-09-02', '2024-09-12', '2024-09-22', '2024-10-02', '2024-10-12'],
+    'Finish Real': ['2024-09-16', '2024-09-26', '2024-10-06', '2024-10-16', '2024-10-26'],
     'Resource': ['Proceso A', 'Proceso B', 'Proceso C', 'Proceso D', 'Proceso E']
 }
 
@@ -41,8 +41,8 @@ fig.add_trace(go.Scatter(
 ))
 
 # Fechas de colocación y entrega
-fecha_colocacion = '2023-08-15'
-fecha_entrega = '2023-10-31'
+fecha_colocacion = '2024-08-15'
+fecha_entrega = '2024-10-31'
 
 # Agregar líneas verticales para las fechas de colocación y entrega
 fig.add_shape(
