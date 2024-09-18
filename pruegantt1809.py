@@ -7,14 +7,14 @@ data = {
     'Task': ['Pedido 1', 'Pedido 2', 'Pedido 3'],
     'Start': ['2023-10-01', '2023-10-03', '2023-10-05'],
     'Finish': ['2023-10-05', '2023-10-07', '2023-10-10'],
-    'Resource': ['Proceso A', 'Proceso B', 'Proceso C']
+    'Progreso': ['25', '80', '40']
 }
 
 # Convertir los datos a un DataFrame
 df = pd.DataFrame(data)
 
 # Crear el gráfico de Gantt
-fig = px.timeline(df, x_start="Start", x_end="Finish", y="Task", color="Resource", text="Resource")
+fig = px.timeline(df, x_start="Start", x_end="Finish", y="Task", color="Progreso", text="Progreso")
 
 # Ajustar el diseño del gráfico
 fig.update_yaxes(autorange="reversed")  # Esto invierte el eje Y para que los pedidos estén en orden
