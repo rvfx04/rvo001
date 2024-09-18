@@ -73,7 +73,7 @@ fig.add_shape(
 # Agregar anotaciones para las fechas de colocación, entrega y actual
 fig.add_annotation(
     x=fecha_colocacion, y=len(df) + 0.5,
-    text="Fecha Colocación: " + fecha_colocacion,
+    text="Emisión: " #+ fecha_colocacion,
     showarrow=False,
     xshift=10,
     font=dict(color="green", size=12)
@@ -81,19 +81,19 @@ fig.add_annotation(
 
 fig.add_annotation(
     x=fecha_entrega, y=len(df) + 0.5,
-    text="Fecha Entrega: " + fecha_entrega,
+    text="Entrega: " #+ fecha_entrega,
     showarrow=False,
     xshift=10,
     font=dict(color="red", size=12)
 )
 
-fig.add_annotation(
-    x=fecha_actual, y=len(df) + 0.5,
-    text="Fecha Actual: " + fecha_actual,
-    showarrow=False,
-    xshift=10,
-    font=dict(color="black", size=12)
-)
+#fig.add_annotation(
+    #x=fecha_actual, y=len(df) + 0.5,
+    #text="Fecha Actual: " + fecha_actual,
+    #showarrow=False,
+    #xshift=10,
+    #font=dict(color="black", size=12)
+#)
 
 # Mostrar la aplicación Streamlit
 st.title("Avance de Procesos de Pedido")
