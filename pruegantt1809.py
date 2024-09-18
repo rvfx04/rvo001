@@ -11,7 +11,7 @@ data = {
     'Finish': ['2023-09-15', '2023-09-25', '2023-10-05', '2023-10-15', '2023-10-25'],
     'Start Real': ['2023-09-02', '2023-09-12', '2023-09-22', '2023-10-02', '2023-10-12'],
     'Finish Real': ['2023-09-16', '2023-09-26', '2023-10-06', '2023-10-16', '2023-10-26'],
-    'Resource': ['Proceso A', 'Proceso B', 'Proceso C', 'Proceso A', 'Proceso B']
+    'Resource': ['Proceso A', 'Proceso B', 'Proceso C', 'Proceso D', 'Proceso E']
 }
 
 # Convertir los datos a un DataFrame
