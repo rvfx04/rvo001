@@ -73,7 +73,7 @@ fig.add_shape(
 # Agregar anotaciones para las fechas de colocación, entrega y actual
 fig.add_annotation(
     x=fecha_colocacion, y=len(df) + 0.5,
-    text="Emisión: " #+ fecha_colocacion,
+    text="Emisión: ", #+ fecha_colocacion,
     showarrow=False,
     xshift=10,
     font=dict(color="green", size=12)
@@ -81,7 +81,7 @@ fig.add_annotation(
 
 fig.add_annotation(
     x=fecha_entrega, y=len(df) + 0.5,
-    text="Entrega: " #+ fecha_entrega,
+    text="Entrega: ", #+ fecha_entrega,
     showarrow=False,
     xshift=10,
     font=dict(color="red", size=12)
