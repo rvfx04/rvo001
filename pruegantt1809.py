@@ -24,8 +24,36 @@ fig.update_yaxes(autorange="reversed")  # Esto invierte el eje Y para que los pe
 fecha_colocacion = '2023-09-25'
 fecha_entrega = '2023-10-15'
 
-fig.add_vline(x=fecha_colocacion, line_width=2, line_dash="dash", line_color="green", annotation_text="Fecha Colocación", annotation_position="top right")
-fig.add_vline(x=fecha_entrega, line_width=2, line_dash="dash", line_color="red", annotation_text="Fecha Entrega", annotation_position="top right")
+fig.add_shape(
+    type="line",
+    x0=fecha_colocacion, y0=0, x1=fecha_colocacion, y1=len(df),
+    line=dict(color="green", width=2, dash="dash"),
+    name="Fecha Colocación"
+)
+
+fig.add_shape(
+    type="line",
+    x0=fecha_entrega, y0=0, x1=fecha_entrega, y1=len(df),
+    line=dict(color="red", width=2, dash="dash"),
+    name="Fecha Entrega"
+)
+
+# Agregar anotaciones para las fechas de colocación y entrega
+fig.add_annotation(
+    x=fecha_colocacion, y=len(df) + 0.5,
+    text="Fecha Colocación",
+    showarrow=False,
+    xshift=10,
+    font=dict(color="green")
+)
+
+fig.add_annotation(
+    x=fecha_entrega, y=len(df) + 0.5,
+    text="Fecha Entrega",
+    showarrow=False,
+    xshift=10,
+    font=dict(color="red")
+)
 
 # Mostrar la aplicación Streamlit
 st.title("Avance de Procesos de Pedido")
