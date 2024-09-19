@@ -16,6 +16,7 @@ data = {
 
 # Convertir los datos a un DataFrame
 df = pd.DataFrame(data)
+st.dataframe(df)
 
 # Crear el gráfico de Gantt
 fig = px.timeline(df, x_start="Start", x_end="Finish", y="Task", text="Resource")
