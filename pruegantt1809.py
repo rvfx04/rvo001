@@ -72,9 +72,6 @@ st.dataframe(df_gantt)
 # Crear el gráfico de Gantt
 fig = px.timeline(df_gantt, x_start="Start", x_end="Finish", y="Proceso", text="Avance")
 
-# Ajustar el diseño del gráfico
-#fig.update_yaxes(autorange="reversed")  # Esto invierte el eje Y para que los pedidos estén en orden
-
 # Ajustar el eje X para que las etiquetas aparezcan cada 7 días
 fig.update_xaxes(dtick="D7")  # 'D7' ajusta las etiquetas del eje X cada 7 días
 
@@ -138,9 +135,6 @@ while current_date <= end_date:
         line=dict(color="gray", width=1, dash="dot"),
     )
     current_date += timedelta(days=2)  # Incrementar 2 días
-
-# Ajustar el eje X para que las etiquetas aparezcan cada 7 días
-fig.update_xaxes(dtick="D7")  # 'D7' ajusta las etiquetas del eje X cada 7 días
 
 # Mostrar la aplicación Streamlit
 pedido = df['PEDIDO'][0]
