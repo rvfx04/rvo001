@@ -75,6 +75,10 @@ fig = px.timeline(df_gantt, x_start="Start", x_end="Finish", y="Proceso", text="
 # Ajustar el diseño del gráfico
 fig.update_yaxes(autorange="reversed")  # Esto invierte el eje Y para que los pedidos estén en orden
 
+# Ajustar el eje X para que las etiquetas aparezcan cada 7 días
+fig.update_xaxes(dtick="D7")  # 'D7' ajusta las etiquetas del eje X cada 7 días
+
+
 # Agregar las barras de las fechas reales
 fig.add_trace(go.Scatter(
     x=df_gantt['Start Real'],
