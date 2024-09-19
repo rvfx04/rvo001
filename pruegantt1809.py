@@ -71,6 +71,10 @@ st.dataframe(df_gantt)
 
 # Crear el gráfico de Gantt
 fig = px.timeline(df_gantt, x_start="Start", x_end="Finish", y="Proceso", text="Avance")
+
+# Mostrar las etiquetas del eje X cada 7 días
+fig.update_xaxes(tickmode='linear', tick0=start_date, dtick=604800000)  # 604800000 ms = 7 días
+
 # Ajustar el diseño del gráfico
 fig.update_yaxes(autorange="reversed")  # Esto invierte el eje Y para que los pedidos estén en orden
 
