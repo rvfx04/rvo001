@@ -6,7 +6,7 @@ from datetime import datetime
 
 # Datos de ejemplo para el gráfico de Gantt
 data = {
-    'Task': ['Pedido 1', 'Pedido 2', 'Pedido 3', 'Pedido 4', 'Pedido 5'],
+    'Task': ['ARM', 'TENID', 'TELAPROB', 'CORTADO', 'COSIDO'],
     'Start': ['2024-09-01', '2024-09-10', '2024-09-20', '2024-10-01', '2024-10-10'],
     'Finish': ['2024-09-15', '2024-09-25', '2024-10-05', '2024-10-15', '2024-10-25'],
     'Start Real': ['2024-09-02', '2024-09-12', '2024-09-22', '2024-10-02', '2024-10-12'],
