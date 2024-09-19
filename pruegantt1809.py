@@ -50,6 +50,9 @@ start_telaprob = f_emision + timedelta(days=3 * FACTOR * dias)
 start_corte = f_emision + timedelta(days=4 * FACTOR * dias)
 start_costura = f_emision + timedelta(days=5 * FACTOR * dias)
 
+# Aquí está start_date, convertirlo a string
+tick0_date = f_emision.strftime('%Y-%m-%d')  # Conversión de la fecha de emisión
+
 # Finish: F_EMISION + (n*FACTOR + DURACION_PROCESO)*DIAS
 finish_armado = f_emision + timedelta(days=(FACTOR + DARM) * dias)
 finish_tenido = f_emision + timedelta(days=(2 * FACTOR + DTENID) * dias)
@@ -72,8 +75,8 @@ st.dataframe(df_gantt)
 # Crear el gráfico de Gantt
 fig = px.timeline(df_gantt, x_start="Start", x_end="Finish", y="Proceso", text="Avance")
 
-# Mostrar las etiquetas del eje X cada 7 días
-fig.update_xaxes(tickmode='linear', tick0=start_date, dtick=604800000)  # 604800000 ms = 7 días
+# Mostrar las etiquetas del eje X cada 7 días (tick0 = fecha de emisión, dtick = 7 días en ms)
+fig.update_xaxes(tickmode='linear', tick0=tick0_date, dtick=7 * 24 * 60 * 60 * 1000)  # 7 días en ms
 
 # Ajustar el diseño del gráfico
 fig.update_yaxes(autorange="reversed")  # Esto invierte el eje Y para que los pedidos estén en orden
