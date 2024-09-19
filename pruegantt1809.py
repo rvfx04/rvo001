@@ -72,9 +72,6 @@ st.dataframe(df_gantt)
 # Crear el gráfico de Gantt
 fig = px.timeline(df_gantt, x_start="Start", x_end="Finish", y="Proceso", text="Avance")
 
-# Ajustar el eje X para que las etiquetas aparezcan cada 7 días
-fig.update_xaxes(dtick="D7")  # 'D7' ajusta las etiquetas del eje X cada 7 días
-
 
 # Agregar las barras de las fechas reales
 fig.add_trace(go.Scatter(
