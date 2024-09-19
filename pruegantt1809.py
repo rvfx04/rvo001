@@ -121,6 +121,19 @@ fig.add_shape(
     line=dict(color="black", width=2, dash="dash"),
     name="Fecha Actual"
 )
+# Agregar líneas verticales muy tenues cada 2 días
+start_date = datetime.strptime(df['F_EMISION'][0], '%Y-%m-%d')
+end_date = datetime.strptime(df['F_ENTREGA'][0], '%Y-%m-%d')
+
+# Iterar cada 2 días desde la fecha de emisión hasta la fecha de entrega
+current_date = start_date
+while current_date <= end_date:
+    fig.add_shape(
+        type="line",
+        x0=current_date, y0=0, x1=current_date, y1=len(df_gantt),
+        line=dict(color="gray", width=1, dash="dot"),
+    )
+    current_date += timedelta(days=2)  # Incrementar 2 días
 
 # Mostrar la aplicación Streamlit
 pedido = df['PEDIDO'][0]
