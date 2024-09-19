@@ -70,7 +70,7 @@ df_gantt = pd.DataFrame({
     'Avance': [df['KG_ARMP'][0], df['KG_TENIDP'][0], df['KG_TELAPROBP'][0], df['CORTADOP'][0], df['COSIDOP'][0]]
 })
 
-st.dataframe(df_gantt)
+#st.dataframe(df_gantt)
 
 # Crear el gráfico de Gantt
 fig = px.timeline(df_gantt, x_start="Start", x_end="Finish", y="Proceso", text="Avance")
