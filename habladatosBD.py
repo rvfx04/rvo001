@@ -179,7 +179,7 @@ ORDER BY Fecha, Proceso;
         connection_string = (
             f"DRIVER={{odbc driver 17 for sql server}};"
             f"SERVER={st.secrets["server"]};"
-            f"DATABASE={st.secrets["database"};"
+            f"DATABASE={st.secrets["database"]};"
             f"UID={st.secrets["username"]};"
             f"PWD={st.secrets["password"]}"
         )
