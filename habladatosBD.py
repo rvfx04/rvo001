@@ -7,10 +7,12 @@ from langchain_groq import ChatGroq
 def reiniciar_chat():
     """Reinicia el historial del chat"""
     st.toast("Datos actualizados", icon='🔄')
-    if "messages" in st.session_state:
-        st.session_state.messages = []
-        prompt_sistema = "Vas a actuar como un analista de datos experto, dando siempre respuestas claras y concretas en español. Si te piden tablas o listas, las generas en markdown."
-        st.session_state.messages.append({"role": "system", "content": prompt_sistema})
+    st.session_state.messages = []
+    # Añadir prompt del sistema
+    st.session_state.messages.append({
+        "role": "system",
+        "content": "Vas a actuar como un analista de datos experto, dando siempre respuestas claras y concretas en español. Si te piden tablas o listas, las generas en markdown."
+    })
 
 def obtener_datos(fecha_inicio, fecha_fin):
     """Ejecuta la consulta SQL y devuelve un DataFrame"""
@@ -242,14 +244,21 @@ if not all(key in st.secrets for key in ['server', 'database', 'username', 'pass
     st.stop()
 
 # Historial de chat
+# Inicialización garantizada del chat
 if "messages" not in st.session_state:
-    reiniciar_chat()
+    st.session_state.messages = []
+    # Añadir el prompt del sistema solo si no existe
+    if not any(msg["role"] == "system" for msg in st.session_state.messages):
+        st.session_state.messages.append({
+            "role": "system",
+            "content": "Vas a actuar como un analista de datos experto, dando siempre respuestas claras y concretas en español. Si te piden tablas o listas, las generas en markdown."
+        })
 
+# Mostrar mensajes existentes
 for message in st.session_state.messages:
-    if message["role"] != "system":
+    if message["role"] != "system":  # No mostrar el mensaje de sistema
         with st.chat_message(message["role"]):
             st.markdown(message["content"])
-
 # Input de usuario
 if prompt := st.chat_input("Haz tu pregunta sobre la producción"):
     if "agent" not in st.session_state:
