@@ -172,13 +172,16 @@ ORDER BY Fecha, Proceso;
     """
     
     try:
+
+
+        
         # Obtener credenciales de los secretos
         connection_string = (
-            f"DRIVER={{SQL Server}};"
-            f"SERVER={st.secrets.sql_server.server};"
-            f"DATABASE={st.secrets.sql_server.database};"
-            f"UID={st.secrets.sql_server.username};"
-            f"PWD={st.secrets.sql_server.password}"
+            f"DRIVER={{odbc driver 17 for sql server}};"
+            f"SERVER={st.secrets["server"]};"
+            f"DATABASE={st.secrets["database"};"
+            f"UID={st.secrets["username"]};"
+            f"PWD={st.secrets["password"]}"
         )
         
         conn = pyodbc.connect(connection_string)
