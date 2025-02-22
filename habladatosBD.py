@@ -15,37 +15,160 @@ def reiniciar_chat():
 def obtener_datos(fecha_inicio, fecha_fin):
     """Ejecuta la consulta SQL y devuelve un DataFrame"""
     consulta = """
-    declare @F1 date = ?, @F2 date = ?;
+    declare @F1 date, @F2 date;
 
-    ;WITH ProductionCTE AS (
-        Select 
-            convert(date,sc.Fecha) as Fecha, 
-            convert(int,sum(sc.Kg_Hilado)) AS Produccion_Hilado,
-            convert(int,sum(sc.Kg_Tejido)) AS Produccion_Tejido,
-            convert(int,sum(sc.Kg_Armados)) AS Produccion_Armado,
-            convert(int,sum(sc.Kg_Teñidos)) AS Produccion_Teñido,
-            convert(int,sum(sc.Unid_Cortadas)) AS Produccion_Corte,
-            convert(int,sum(Unid_Cosidas)) AS Produccion_Costura
-        From
-        (
-            -- ... (todo el resto de la consulta original)
-        ) sc
-        group by sc.Fecha
-    )
-    SELECT 
-        Fecha,
-        Proceso,
-        Cantidad
-    FROM ProductionCTE
-    UNPIVOT (Cantidad FOR Proceso IN (
+set @F1 = '2025-01-01';
+set @F2 = '2025-12-31';
+
+;WITH ProductionCTE AS (
+    Select 
+        convert(date,sc.Fecha) as Fecha, 
+        convert(int,sum(sc.Kg_Hilado)) AS Produccion_Hilado,
+        convert(int,sum(sc.Kg_Tejido)) AS Produccion_Tejido,
+        convert(int,sum(sc.Kg_Armados)) AS Produccion_Armado,
+        convert(int,sum(sc.Kg_Teñidos)) AS Produccion_Teñido,
+        convert(int,sum(sc.Unid_Cortadas)) AS Produccion_Corte,
+        convert(int,sum(Unid_Cosidas)) AS Produccion_Costura
+    From
+    (
+        --Hilado
+        select 
+            b.dtFechaRegistro AS Fecha, 
+            a.dCantidadIng AS Kg_Hilado, 
+            0 AS Kg_Tejido, 
+            0 AS Kg_Armados,
+            0 AS Kg_Teñidos,
+            0 AS Unid_Cortadas,
+            0 AS Unid_Cosidas
+        from docNotaInventarioItem a 
+        inner join docNotaInventario b
+        on b.IdDocumento_NotaInventario = a.IdDocumento_NotaInventario
+        where a.IdtdItemForm=19 and a.dCantidadIng>0 and 
+        a.IdmaeCentroCosto=7 
+        and b.IdtdDocumentoForm=1 
+        and b.IdmaeArea_Almacen=6 
+        and b.dtFechaRegistro between @F1 and @F2
+
+        union all
+
+        --Tejido
+        select 
+            dtFechaEmision, 
+            0 AS Kg_Hilado, 
+            dpeso as Kg_Tejido, 
+            0 AS Kg_Armados,
+            0 AS Kg_Teñidos,
+            0 AS Unid_Cortadas,
+            0 AS Unid_Cosidas
+        from docOrdenProduccionRollo
+        where dtFechaEmision between @F1 and @F2
+
+        union all
+
+        --Partidas armadas
+        select 
+            dtFechaEmision,  
+            0 AS Kg_Hilado, 
+            0 as Kg_Tejido, 
+            dCantidad AS Kg_Armados,
+            0 AS Kg_Teñidos,
+            0 AS Unid_Cortadas,
+            0 AS Unid_Cosidas
+        from docOrdenProduccion
+        where IdtdDocumentoForm=138 and bAnulado=0
+        and dtFechaEmision between @F1 and @F2
+
+        union all
+
+        --Teñido
+        select  
+            cast(convert(char(8), Fechacerrado, 112) as datetime) AS Fecha, 
+            0 AS Kg_Hilado, 
+            0 as Kg_Tejido, 
+            0 AS Kg_Armados,
+            dCantidad AS Kg_Teñidos,
+            0 AS Unid_Cortadas,
+            0 AS Unid_Cosidas
+        from docOrdenProduccion
+        where IdtdDocumentoForm=138 and bAnulado=0 and bCerrado=1
+        and cast(convert(char(8), Fechacerrado, 112) as datetime) between @F1 and @F2
+
+        union all
+
+        --Corte
+        SELECT  
+            a.dtFechaRegistro,
+            0 AS Kg_Hilado, 
+            0 as Kg_Tejido, 
+            0 AS Kg_Armados,
+            0 AS Kg_Teñidos,
+            b.dCantidadIng AS Unid_Cortadas,
+            0 AS Unid_Cosidas
+        FROM dbo.docNotaInventario a WITH (NOLOCK)	
+        INNER JOIN dbo.docNotaInventarioItem b WITH (NOLOCK)      	
+            ON a.IdDocumento_NotaInventario = b.IdDocumento_NotaInventario     	
+            AND b.dCantidadIng <> 0     	
+        INNER JOIN dbo.docOrdenProduccion c WITH (NOLOCK)      	
+            ON a.IdDocumento_OrdenProduccion = c.IdDocumento_OrdenProduccion    	
+            AND c.bCerrado = 0      	
+            AND c.bAnulado = 0    	
+            AND c.IdtdDocumentoForm = 127
+        WHERE (a.IdtdDocumentoForm = 131)
+            AND (a.bDevolucion = 0)      	
+            AND (a.bDesactivado = 0)      	
+            AND (a.bAnulado = 0)      	
+            AND (a.IdDocumento_OrdenProduccion <> 0) 	
+            and a.dtFechaRegistro between @F1 and @F2
+            and a.IdmaeCentroCosto=29
+
+        union all
+
+        --Costura
+        SELECT  
+            a.dtFechaRegistro, 
+            0 AS Kg_Hilado, 
+            0 as Kg_Tejido, 
+            0 AS Kg_Armados,
+            0 AS Kg_Teñidos,
+            0 AS Unid_Cortadas,
+            b.dCantidadIng AS Unid_Cosidas  	
+        FROM dbo.docNotaInventario a WITH (NOLOCK)	
+        INNER JOIN dbo.docNotaInventarioItem b WITH (NOLOCK)      	
+            ON a.IdDocumento_NotaInventario = b.IdDocumento_NotaInventario     	
+            AND b.dCantidadIng <> 0     	
+        INNER JOIN dbo.docOrdenProduccion c WITH (NOLOCK)      	
+            ON a.IdDocumento_OrdenProduccion = c.IdDocumento_OrdenProduccion    	
+            AND c.bCerrado = 0      	
+            AND c.bAnulado = 0    	
+            AND c.IdtdDocumentoForm = 127
+        WHERE (a.IdtdDocumentoForm = 131)
+            AND (a.bDevolucion = 0)      	
+            AND (a.bDesactivado = 0)      	
+            AND (a.bAnulado = 0)      	
+            AND (a.IdDocumento_OrdenProduccion <> 0) 	
+            and a.dtFechaRegistro between @F1 and @F2
+            and a.IdmaeCentroCosto=47
+    ) sc
+    group by sc.Fecha
+)
+SELECT 
+    Fecha,
+    Proceso,
+    Cantidad
+FROM ProductionCTE
+UNPIVOT
+(
+    Cantidad FOR Proceso IN 
+    (
         Produccion_Hilado,
         Produccion_Tejido,
         Produccion_Armado,
         Produccion_Teñido,
         Produccion_Corte,
         Produccion_Costura
-    )) AS UnpivotedData
-    ORDER BY Fecha, Proceso;
+    )
+) AS UnpivotedData
+ORDER BY Fecha, Proceso;
     """
     
     try:
