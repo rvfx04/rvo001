@@ -230,7 +230,7 @@ st.title("📈 Análisis de Producción en Tiempo Real")
 st.caption("Sistema de consulta inteligente de datos de producción")
 
 # Verificar que los secretos estén configurados
-if not all(key in st.secrets.sql_server for key in ['server', 'database', 'username', 'password']):
+if not all(key in st.secrets for key in ['server', 'database', 'username', 'password']):
     st.error("Faltan configuraciones en los secretos. Verifica que tengas:")
     st.code("""
     [sql_server]
