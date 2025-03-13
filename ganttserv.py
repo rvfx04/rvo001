@@ -101,8 +101,16 @@ def main():
             # Filtrar los registros donde PENDIENT sea mayor a 4
             df_filtered = df[df['PENDIENT'] > 4]
 
-            # Ordenar los datos por PROVEEDOR y DIAS_DESDE_MIN_SAL
-            df_sorted = df_filtered.sort_values(by=['PROVEEDOR', 'DIAS_DESDE_MIN_SAL'], ascending=[True, False])
+            # Agrupar por proveedor y sumar MIN_PEND para evitar duplicación de barras
+            df_grouped = df_filtered.groupby('PROVEEDOR', as_index=False).agg({
+                'MIN_PEND': 'sum',
+                'CLIENTE': 'first',  # Tomar el primer cliente para cada proveedor
+                'OS_OT': 'first',     # Tomar el primer OS_OT para cada proveedor
+                'MIN_SAL': 'first'    # Tomar la primera fecha MIN_SAL para cada proveedor
+            })
+
+            # Ordenar los datos por PROVEEDOR y MIN_PEND
+            df_sorted = df_grouped.sort_values(by=['PROVEEDOR', 'MIN_PEND'], ascending=[True, False])
 
             # Redondear MIN_PEND a enteros
             df_sorted['MIN_PEND'] = df_sorted['MIN_PEND'].round().astype(int)
@@ -121,16 +129,14 @@ def main():
                 color="CLIENTE",    # Color por cliente
                 title="OS por servicio (Ancho de barras proporcional a minutos de costura)",
                 labels={
-                    "MIN_PEND": "MIN_PEND",
+                    "MIN_PEND": "Minutos Pendientes",
                     "PROVEEDOR": "Proveedor",
                     "CLIENTE": "Cliente"
                 },
                 text="OS_OT",       # Mostrar el código de la orden (OS_OT) en las barras
                 hover_data={
-                    "PENDIENT": True,  # Mostrar PENDIENT en el hover
                     "MIN_SAL": True,   # Mostrar MIN_SAL en el hover (formato corto)
-                    "OP": True,        # Mostrar OP en el hover
-                    "PROVEEDOR": False  # Ocultar PROVEEDOR en el hover
+                    "CLIENTE": False   # Ocultar CLIENTE en el hover
                 }
             )
 
@@ -140,14 +146,15 @@ def main():
                 insidetextanchor='middle'  # Centrar el texto dentro de las barras
             )
             fig.update_layout(
-                xaxis_title="MIN_PEND",  # Título del eje X
+                xaxis_title="Minutos Pendientes",  # Título del eje X
                 yaxis_title="Proveedor",
                 showlegend=True,
+                height=600,  # Ajustar la altura del gráfico
                 margin=dict(l=50, r=50, b=100, t=100, pad=10)  # Ajustar los márgenes
             )
 
             # Mostrar el gráfico en Streamlit
-            st.plotly_chart(fig)
+            st.plotly_chart(fig, use_container_width=True)  # Usar el ancho completo del contenedor
 
         # Cerrar la conexión a la base de datos
         conn.close()
