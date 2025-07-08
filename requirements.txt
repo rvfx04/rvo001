@@ -10,3 +10,4 @@ langchain_groq==0.1.9
 tabulate
 pyodbc
 numpy
+streamlit
